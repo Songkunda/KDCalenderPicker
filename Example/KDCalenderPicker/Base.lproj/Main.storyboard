@@ -29,12 +29,25 @@
                                     <action selector="chooseDate:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="pKg-xn-ZWm"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YNT-A0-Shx" customClass="KDTimeRangeChooser" customModule="KDCalenderPicker">
+                                <rect key="frame" x="26" y="65" width="50" height="24"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="750" constant="24" id="BpG-tD-BhG"/>
+                                    <constraint firstAttribute="width" priority="750" constant="50" id="NHq-Xz-Fx2"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="YNT-A0-Shx" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="10" id="4QH-Ux-sFN"/>
+                            <constraint firstItem="YNT-A0-Shx" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" constant="45" id="Lya-p2-4Pm"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="133.59999999999999" y="91.304347826086968"/>
         </scene>
     </scenes>
 </document>

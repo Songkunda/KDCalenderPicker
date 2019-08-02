@@ -273,12 +273,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-KDCalenderPicker_Example/Pods-KDCalenderPicker_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/KDCalenderPicker/KDCalenderPicker.framework",
+				"${BUILT_PRODUCTS_DIR}/Koyomi/Koyomi.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KDCalenderPicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Koyomi.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

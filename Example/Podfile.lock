@@ -4,7 +4,9 @@ PODS:
   - FBSnapshotTestCase/Core (2.1.4)
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
-  - KDCalenderPicker (0.1.0)
+  - KDCalenderPicker (0.1.0):
+    - Koyomi
+  - Koyomi (1.2.7)
   - Nimble (7.3.4)
   - Nimble-Snapshots (6.3.0):
     - Nimble-Snapshots/Core (= 6.3.0)
@@ -23,6 +25,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - FBSnapshotTestCase
+    - Koyomi
     - Nimble
     - Nimble-Snapshots
     - Quick
@@ -33,7 +36,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  KDCalenderPicker: 138beb8f11dccdd26ea21fd1bed4a4fac31e1009
+  KDCalenderPicker: 188784ddc9931d104e3308af0c5a181430214ac4
+  Koyomi: f03615b8d2bb5a5a4752c6404a9794ed7ef7b327
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
   Nimble-Snapshots: f5459b5b091678dc942d03ec4741cacb58ba4a52
   Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
