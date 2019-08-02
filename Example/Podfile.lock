@@ -36,7 +36,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  KDCalenderPicker: 188784ddc9931d104e3308af0c5a181430214ac4
+  KDCalenderPicker: 72a9bc3bd6e7cb140eceb9bccf2882c867ff6e4c
   Koyomi: f03615b8d2bb5a5a4752c6404a9794ed7ef7b327
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
   Nimble-Snapshots: f5459b5b091678dc942d03ec4741cacb58ba4a52

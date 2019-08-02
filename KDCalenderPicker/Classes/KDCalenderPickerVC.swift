@@ -169,7 +169,7 @@ public class KDCalenderPickerVC: UIViewController {
         collectionV.showsVerticalScrollIndicator = false
         collectionV.showsHorizontalScrollIndicator = false
         collectionV.register(KDCalenderCell.self, forCellWithReuseIdentifier: "KDCalenderCell")
-        collectionV.register(KDCalenderHeaderItem.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "KDCalenderHeaderItem")
+        collectionV.register(KDCalenderHeaderItem.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "KDCalenderHeaderItem")
         popView.addSubview(collectionV)
         NSLayoutConstraint.activate([
             NSLayoutConstraint(item: collectionV, attribute: .top, relatedBy: .equal, toItem: headerView, attribute: .bottom, multiplier: 1, constant: 0),
@@ -227,7 +227,7 @@ extension KDCalenderPickerVC: UICollectionViewDelegate {
 
 extension KDCalenderPickerVC: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionElementKindSectionHeader {
+        if kind == UICollectionView.elementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "KDCalenderHeaderItem", for: indexPath) as! KDCalenderHeaderItem
             return header
         }
