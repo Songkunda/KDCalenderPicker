@@ -14,6 +14,8 @@ class KDTimeRangeChooser: UIView {
     var isSetup = false
     var poper: UIView?
     let sCaLab = UILabel(frame: .zero)
+    var beginDate:Date? = Date()
+    var endDate:Date? = Date()
     
     var startKoyomi: Koyomi?
     var endKoyomi: Koyomi?
@@ -102,6 +104,34 @@ class KDTimeRangeChooser: UIView {
                 //
                 popView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[sk][ek(==sk@1000)]|", options: [], metrics: nil, views: ["sk": startKoyomi!, "ek": endKoyomi!]))
                 
+                let footer = UIView(frame: .zero)
+                footer.translatesAutoresizingMaskIntoConstraints = false
+                let cancelBtn = UIButton(type: .custom)
+                cancelBtn.translatesAutoresizingMaskIntoConstraints = false
+                cancelBtn.layer.cornerRadius = 2
+                cancelBtn.layer.borderColor = UIColor(red: 231.0 / 255.0, green: 231.0 / 255.0, blue: 231.0 / 255.0, alpha: 1.0).cgColor
+                cancelBtn.layer.borderWidth = 1
+                cancelBtn.setTitle("取消", for: .normal)
+                cancelBtn.setTitleColor(UIColor(red: 153.0 / 255.0, green: 153.0 / 255.0, blue: 153.0 / 255.0, alpha: 1), for: .normal)
+                cancelBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
+                footer.addSubview(cancelBtn)
+                let submitBtn = UIButton(type: .custom)
+                submitBtn.translatesAutoresizingMaskIntoConstraints = false
+                submitBtn.setTitle("确定", for: .normal)
+                submitBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
+                submitBtn.layer.cornerRadius = 2
+                submitBtn.backgroundColor = UIColor(red: 66.0 / 255.0, green: 192.0 / 255.0, blue: 155.0 / 255.0, alpha: 1.0)
+                footer.addSubview(submitBtn)
+                popView.addSubview(footer)
+                popView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[ft]|", options: [], metrics: nil, views: ["ft": footer]))
+                popView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[sk][ft]|", options: [], metrics: nil, views: ["ft": footer, "sk": startKoyomi!]))
+                footer.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[cb(==56)]-20-[sb(==cb@1000)]-20-|", options: [], metrics: nil, views: ["cb": cancelBtn, "sb": submitBtn]))
+                footer.addConstraints([
+                    NSLayoutConstraint(item: submitBtn, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 0, constant: 25.0),
+                    NSLayoutConstraint(item: cancelBtn, attribute: .centerY, relatedBy: .equal, toItem: footer, attribute: .centerY, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: cancelBtn, attribute: .height, relatedBy: .equal, toItem: submitBtn, attribute: .height, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: submitBtn, attribute: .centerY, relatedBy: .equal, toItem: footer, attribute: .centerY, multiplier: 1, constant: 0)])
+                
                 return popView
             }()
             
@@ -137,7 +167,7 @@ class KDTimeRangeChooser: UIView {
                                                                 weekday: textBlack,
                                                                 holiday: (saturday: textBlack, sunday: textBlack),
                                                                 otherMonth: textGray,
-                                                                separator:.white)
+                                                                separator: .white)
         
         koyomi.style = KoyomiStyle.custom(customColor: customColorScheme)
         //
