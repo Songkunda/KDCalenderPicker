@@ -16,12 +16,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
     }
-    @IBAction func chooseDate(_ sender: Any) {
-        let picker = KDCalenderPickerVC()
-        self.present(picker, animated: true) {
-            
-        }
-    }
+  
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
