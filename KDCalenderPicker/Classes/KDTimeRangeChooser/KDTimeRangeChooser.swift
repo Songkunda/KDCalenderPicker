@@ -8,10 +8,6 @@
 import Foundation
 import JTAppleCalendar
 import UIKit
-
-class KDTimeRangeChooserHeader: UIView {
-}
-
 class KDTimeRangeChooser: UIView {
     var delegate: UIViewController?
     var isSetup = false
@@ -20,15 +16,14 @@ class KDTimeRangeChooser: UIView {
     let eCaLab = UILabel(frame: .zero)
 
     var selectedStartDate: Date = Date()
-    
+
     var selectedEndDate: Date = Date()
-  
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
     }
-    
+
     func setupUI() {
         if isSetup == false {
             isSetup = true
@@ -53,7 +48,7 @@ class KDTimeRangeChooser: UIView {
             kLab.textAlignment = .center
             kLab.translatesAutoresizingMaskIntoConstraints = false
             addSubview(kLab)
-            
+
             eCaLab.text = todayStr
             eCaLab.font = UIFont.systemFont(ofSize: 12.0)
             eCaLab.textAlignment = .center
@@ -73,7 +68,7 @@ class KDTimeRangeChooser: UIView {
             NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[sf(>=24@1000)]", options: [.alignAllCenterY], metrics: nil, views: ["sf": self]))
         }
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         if poper == nil {
@@ -88,7 +83,7 @@ class KDTimeRangeChooser: UIView {
                 popView.setupUI()
                 return popView
             }()
-            
+
         } else {
             poper = {
                 poper?.removeFromSuperview()
@@ -96,7 +91,7 @@ class KDTimeRangeChooser: UIView {
             }()
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupUI()

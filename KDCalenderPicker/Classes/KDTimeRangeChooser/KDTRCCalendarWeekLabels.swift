@@ -6,7 +6,7 @@
 //
 
 import Foundation
-class KDTRCWeekLabels: UIView {
+class KDTRCCalendarWeekLabels: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         var visualFormat = "H:|"
@@ -18,13 +18,13 @@ class KDTRCWeekLabels: UIView {
             lab.textAlignment = .center
             lab.font = .systemFont(ofSize: 12.0)
             lab.textColor = KDTimeRangeChooserStyle.disColor
-            visualFormat += "[lb\(i)(==25)]"
+            visualFormat += "[lb\(i)(==cs)]"
             visualViews["lb\(i)"] = lab
             addSubview(lab)
             addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[lb]|", options: [], metrics: nil, views: ["lb": lab]))
         }
         visualFormat += "|"
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: visualFormat, options: [], metrics: nil, views: visualViews))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: visualFormat, options: [], metrics: ["cs":KDTRCCalendarViewCellSize], views: visualViews))
     }
 
     func week(_ weekNumber: Int) -> String? {
