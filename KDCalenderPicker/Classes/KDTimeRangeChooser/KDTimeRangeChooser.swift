@@ -8,8 +8,11 @@
 import Foundation
 import JTAppleCalendar
 import UIKit
+protocol KDTimeRangeChooserDelegate: NSObjectProtocol {
+    func changed(timeRangeChooser: KDTimeRangeChooser)
+}
+
 class KDTimeRangeChooser: UIView {
-    var delegate: UIViewController?
     var isSetup = false
     var poper: UIView?
     let sCaLab = UILabel(frame: .zero)
@@ -17,6 +20,7 @@ class KDTimeRangeChooser: UIView {
 
     var beginSelectedTime: Date = Date()
     var endSelectedTime: Date = Date()
+    var delegate: KDTimeRangeChooserDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -82,15 +86,16 @@ class KDTimeRangeChooser: UIView {
                 popView.cancelBtnClicked = {
                     self.removePoper()
                 }
-                popView.submitBtnClicked = {
-                    if( popView.beginSelectedTime < popView.endSelectedTime ){
+                popView.submitBtnClicked = { [unowned self] in
+                    if popView.beginSelectedTime < popView.endSelectedTime {
                         self.beginSelectedTime = popView.beginSelectedTime
                         self.endSelectedTime = popView.endSelectedTime
-                    }else{
+                    } else {
                         self.beginSelectedTime = popView.endSelectedTime
                         self.endSelectedTime = popView.beginSelectedTime
                     }
                     self.refleshUI()
+                    self.delegate?.changed(timeRangeChooser: self)
                     self.removePoper()
                 }
                 popView.translatesAutoresizingMaskIntoConstraints = false
