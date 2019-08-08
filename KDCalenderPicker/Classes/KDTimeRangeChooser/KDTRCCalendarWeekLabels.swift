@@ -24,7 +24,7 @@ class KDTRCCalendarWeekLabels: UIView {
             addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[lb]|", options: [], metrics: nil, views: ["lb": lab]))
         }
         visualFormat += "|"
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: visualFormat, options: [], metrics: ["cs":KDTRCCalendarViewCellSize], views: visualViews))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: visualFormat, options: [], metrics: ["cs": KDTRCCalendarViewCellSize], views: visualViews))
     }
 
     func week(_ weekNumber: Int) -> String? {

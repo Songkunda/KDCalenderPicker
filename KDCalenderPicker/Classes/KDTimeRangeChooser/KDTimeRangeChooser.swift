@@ -15,23 +15,26 @@ class KDTimeRangeChooser: UIView {
     let sCaLab = UILabel(frame: .zero)
     let eCaLab = UILabel(frame: .zero)
 
-    var selectedStartDate: Date = Date()
-
-    var selectedEndDate: Date = Date()
+    var beginSelectedTime: Date = Date()
+    var endSelectedTime: Date = Date()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
     }
 
+    func refleshUI() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
+        let beginStr = formatter.string(from: beginSelectedTime)
+        sCaLab.text = beginStr
+        let endStr = formatter.string(from: endSelectedTime)
+        eCaLab.text = endStr
+    }
+
     func setupUI() {
         if isSetup == false {
             isSetup = true
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy/MM/dd"
-            let todayStr = formatter.string(from: Date())
-            // 88 - 13 - 88
-            sCaLab.text = todayStr
             sCaLab.textAlignment = .center
             sCaLab.font = UIFont.systemFont(ofSize: 12.0)
             sCaLab.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +52,6 @@ class KDTimeRangeChooser: UIView {
             kLab.translatesAutoresizingMaskIntoConstraints = false
             addSubview(kLab)
 
-            eCaLab.text = todayStr
             eCaLab.font = UIFont.systemFont(ofSize: 12.0)
             eCaLab.textAlignment = .center
             eCaLab.translatesAutoresizingMaskIntoConstraints = false
@@ -66,6 +68,7 @@ class KDTimeRangeChooser: UIView {
             addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[ec(24)]|", options: [.alignAllCenterY], metrics: nil, views: ["ec": eCaLab]))
             NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:[sf(>=190@1000)]", options: [], metrics: nil, views: ["sf": self]))
             NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[sf(>=24@1000)]", options: [.alignAllCenterY], metrics: nil, views: ["sf": self]))
+            refleshUI()
         }
     }
 
@@ -74,22 +77,39 @@ class KDTimeRangeChooser: UIView {
         if poper == nil {
             poper = {
                 let popView = KDTRCPopView(frame: .zero)
-                popView.selectedStartDate = selectedStartDate
-                popView.selectedEndDate = selectedEndDate
+                popView.beginSelectedTime = beginSelectedTime
+                popView.endSelectedTime = endSelectedTime
+                popView.cancelBtnClicked = {
+                    self.removePoper()
+                }
+                popView.submitBtnClicked = {
+                    if( popView.beginSelectedTime < popView.endSelectedTime ){
+                        self.beginSelectedTime = popView.beginSelectedTime
+                        self.endSelectedTime = popView.endSelectedTime
+                    }else{
+                        self.beginSelectedTime = popView.endSelectedTime
+                        self.endSelectedTime = popView.beginSelectedTime
+                    }
+                    self.refleshUI()
+                    self.removePoper()
+                }
                 popView.translatesAutoresizingMaskIntoConstraints = false
                 self.superview?.addSubview(popView)
                 self.superview?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[cs]-(-88)-[pp(==512)]", options: [], metrics: nil, views: ["pp": popView, "cs": sCaLab]))
                 self.superview?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[cs]-[pp(==280)]", options: [], metrics: nil, views: ["pp": popView, "cs": sCaLab]))
-                popView.setupUI()
                 return popView
             }()
 
         } else {
-            poper = {
-                poper?.removeFromSuperview()
-                return nil
-            }()
+            removePoper()
         }
+    }
+
+    func removePoper() {
+        poper = {
+            poper?.removeFromSuperview()
+            return nil
+        }()
     }
 
     required init?(coder aDecoder: NSCoder) {
