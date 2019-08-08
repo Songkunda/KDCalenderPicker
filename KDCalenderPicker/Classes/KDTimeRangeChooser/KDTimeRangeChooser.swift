@@ -8,11 +8,11 @@
 import Foundation
 import JTAppleCalendar
 import UIKit
-protocol KDTimeRangeChooserDelegate: NSObjectProtocol {
+protocol KDTimeRangeChooserDelegate: class {
     func changed(timeRangeChooser: KDTimeRangeChooser)
 }
 
-class KDTimeRangeChooser: UIView {
+public class KDTimeRangeChooser: UIView {
     var isSetup = false
     var poper: UIView?
     let sCaLab = UILabel(frame: .zero)

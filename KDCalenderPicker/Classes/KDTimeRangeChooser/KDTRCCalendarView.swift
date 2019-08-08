@@ -9,7 +9,7 @@ import Foundation
 import JTAppleCalendar
 
 let KDTRCCalendarViewCellSize: CGFloat = 30
-protocol KDTRCCalendarViewDelegate: NSObjectProtocol {
+protocol KDTRCCalendarViewDelegate: class {
     func selectedDate(_ calendarView: KDTRCCalendarView, didSelectDate date: Date)
 }
 
