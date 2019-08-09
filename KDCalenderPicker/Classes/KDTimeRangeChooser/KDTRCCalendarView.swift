@@ -9,22 +9,24 @@ import Foundation
 import JTAppleCalendar
 
 let KDTRCCalendarViewCellSize: CGFloat = 30
-protocol KDTRCCalendarViewDelegate: class {
+public protocol KDTRCCalendarViewDelegate: class {
     func selectedDate(_ calendarView: KDTRCCalendarView, didSelectDate date: Date)
 }
 
-class KDTRCCalendarView: UIView {
-    var selectedDate: Date = Date()
-    var beginDate: Date = Calendar.current.date(byAdding: .month, value: -12, to: Date())!
-    var endDate: Date = Date()
+public class KDTRCCalendarView: UIView {
+    public var selectedDate: Date = Date()
+    public var beginDate: Date = Calendar.current.date(byAdding: .month, value: -12, to: Date())!
+    public var endDate: Date = Date()
     fileprivate let header = KDTRCCalendarHeaderView(frame: .zero)
     fileprivate let myCalendar = JTAppleCalendarView(frame: .zero)
-    var delegate: KDTRCCalendarViewDelegate?
+    public var delegate: KDTRCCalendarViewDelegate?
+    public var timeZone = TimeZone(identifier:"Asia/Shanghai")!
 
     fileprivate func setupUI() {
         header.translatesAutoresizingMaskIntoConstraints = false
         header.changeMonth = { todo in
             let formatter = DateFormatter()
+            formatter.timeZone = self.timeZone
             formatter.dateFormat = "yyyy MM"
             var month = (self.header.month ?? 1) + todo
             var year = self.header.year ?? 2019
@@ -77,7 +79,7 @@ class KDTRCCalendarView: UIView {
         super.init(frame: frame)
     }
 
-    override func didMoveToSuperview() {
+    override public func didMoveToSuperview() {
         super.didMoveToSuperview()
         setupUI()
     }
@@ -86,7 +88,7 @@ class KDTRCCalendarView: UIView {
         guard let startDate = visibleDates.monthDates.first?.date else {
             return
         }
-        let dateComponents = Calendar.current.dateComponents(in: TimeZone(secondsFromGMT: 28800)!, from: startDate)
+        let dateComponents = Calendar.current.dateComponents(in: timeZone, from: startDate)
         header.setTitle(withYear: dateComponents.year!, andMonth: dateComponents.month!)
     }
 
@@ -124,24 +126,24 @@ class KDTRCCalendarView: UIView {
 }
 
 extension KDTRCCalendarView: JTAppleCalendarViewDelegate {
-    func calendar(_ calendar: JTAppleCalendarView, willDisplay cell: JTAppleCell, forItemAt date: Date, cellState: CellState, indexPath: IndexPath) {
+    public func calendar(_ calendar: JTAppleCalendarView, willDisplay cell: JTAppleCell, forItemAt date: Date, cellState: CellState, indexPath: IndexPath) {
         (cell as? KDTRCDateCell)?.handleCellSelection(cellState: cellState, date: date, selectedDate: selectedDate, beginDate: beginDate, endDate: endDate)
     }
 
-    func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
+    public func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
         let cell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "dateCell", for: indexPath) as! KDTRCDateCell
         cell.handleCellSelection(cellState: cellState, date: date, selectedDate: selectedDate, beginDate: beginDate, endDate: endDate)
         return cell
     }
 
-    func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
+    public func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
         selectedDate = date
         (cell as? KDTRCDateCell)?.cellSelectionChanged(cellState, date: date, beginDate: beginDate, endDate: endDate)
         calendar.scrollToDate(date)
         delegate?.selectedDate(self, didSelectDate: date)
     }
 
-    func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
+    public func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
         (cell as? KDTRCDateCell)?.cellSelectionChanged(cellState, date: date, beginDate: beginDate, endDate: endDate)
     }
 
@@ -152,7 +154,7 @@ extension KDTRCCalendarView: JTAppleCalendarViewDelegate {
     /// - Parameters:
     ///   - calendar: 日历
     ///   - visibleDates: 包含日历中可见日期的信息
-    func calendar(_ calendar: JTAppleCalendarView, didScrollToDateSegmentWith visibleDates: DateSegmentInfo) {
+    public func calendar(_ calendar: JTAppleCalendarView, didScrollToDateSegmentWith visibleDates: DateSegmentInfo) {
         headerTextUpdate(visibleDates)
     }
 }
@@ -162,7 +164,7 @@ extension KDTRCCalendarView: JTAppleCalendarViewDataSource {
     ///
     /// - Parameter calendar: 日历
     /// - Returns: 配置数据
-    func configureCalendar(_ calendar: JTAppleCalendarView) -> ConfigurationParameters {
+    public func configureCalendar(_ calendar: JTAppleCalendarView) -> ConfigurationParameters {
         // CCT
         // let dateComponents = Calendar.current.dateComponents(in:  TimeZone(abbreviation: "GMT+0800") ?? TimeZone(secondsFromGMT: 28800)!, from: Date())
         //  print("\(dateComponents.year)年\(dateComponents.month)月\(dateComponents.day)日")

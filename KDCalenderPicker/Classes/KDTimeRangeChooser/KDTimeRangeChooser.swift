@@ -17,25 +17,27 @@ public class KDTimeRangeChooser: UIView {
     var poper: UIView?
     let sCaLab = UILabel(frame: .zero)
     let eCaLab = UILabel(frame: .zero)
-    
+
     public var beginSelectedTime: Date = Date()
     public var endSelectedTime: Date = Date()
     public var delegate: KDTimeRangeChooserDelegate?
-    
+    public var timeZone = TimeZone(identifier: "Asia/Shanghai")!
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
     }
-    
+
     func refleshUI() {
         let formatter = DateFormatter()
+        formatter.timeZone = timeZone
         formatter.dateFormat = "yyyy/MM/dd"
         let beginStr = formatter.string(from: beginSelectedTime)
         sCaLab.text = beginStr
         let endStr = formatter.string(from: endSelectedTime)
         eCaLab.text = endStr
     }
-    
+
     func setupUI() {
         if isSetup == false {
             isSetup = true
@@ -55,7 +57,7 @@ public class KDTimeRangeChooser: UIView {
             kLab.textAlignment = .center
             kLab.translatesAutoresizingMaskIntoConstraints = false
             addSubview(kLab)
-            
+
             eCaLab.font = UIFont.systemFont(ofSize: 12.0)
             eCaLab.textAlignment = .center
             eCaLab.translatesAutoresizingMaskIntoConstraints = false
@@ -75,8 +77,8 @@ public class KDTimeRangeChooser: UIView {
             refleshUI()
         }
     }
-    
-    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         if poper == nil {
             poper = {
@@ -104,19 +106,19 @@ public class KDTimeRangeChooser: UIView {
                 self.superview?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[cs]-[pp(==280)]", options: [], metrics: nil, views: ["pp": popView, "cs": sCaLab]))
                 return popView
             }()
-            
+
         } else {
             removePoper()
         }
     }
-    
+
     func removePoper() {
         poper = {
             poper?.removeFromSuperview()
             return nil
         }()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupUI()
