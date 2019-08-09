@@ -8,15 +8,20 @@
 import Foundation
 import JTAppleCalendar
 import UIKit
-class KDTimeRangeChooser: UIView {
-    var delegate: UIViewController?
+public protocol KDTimeRangeChooserDelegate: class {
+    func changed(timeRangeChooser: KDTimeRangeChooser)
+}
+
+public class KDTimeRangeChooser: UIView {
     var isSetup = false
     var poper: UIView?
     let sCaLab = UILabel(frame: .zero)
     let eCaLab = UILabel(frame: .zero)
 
-    var beginSelectedTime: Date = Date()
-    var endSelectedTime: Date = Date()
+    public var beginSelectedTime: Date = Date()
+    public var endSelectedTime: Date = Date()
+    public var delegate: KDTimeRangeChooserDelegate?
+    public var timeZone = TimeZone(identifier: "Asia/Shanghai")!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,6 +30,7 @@ class KDTimeRangeChooser: UIView {
 
     func refleshUI() {
         let formatter = DateFormatter()
+        formatter.timeZone = timeZone
         formatter.dateFormat = "yyyy/MM/dd"
         let beginStr = formatter.string(from: beginSelectedTime)
         sCaLab.text = beginStr
@@ -72,7 +78,7 @@ class KDTimeRangeChooser: UIView {
         }
     }
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         if poper == nil {
             poper = {
@@ -82,15 +88,16 @@ class KDTimeRangeChooser: UIView {
                 popView.cancelBtnClicked = {
                     self.removePoper()
                 }
-                popView.submitBtnClicked = {
-                    if( popView.beginSelectedTime < popView.endSelectedTime ){
+                popView.submitBtnClicked = { [unowned self] in
+                    if popView.beginSelectedTime < popView.endSelectedTime {
                         self.beginSelectedTime = popView.beginSelectedTime
                         self.endSelectedTime = popView.endSelectedTime
-                    }else{
+                    } else {
                         self.beginSelectedTime = popView.endSelectedTime
                         self.endSelectedTime = popView.beginSelectedTime
                     }
                     self.refleshUI()
+                    self.delegate?.changed(timeRangeChooser: self)
                     self.removePoper()
                 }
                 popView.translatesAutoresizingMaskIntoConstraints = false

@@ -14,10 +14,14 @@ class KDTRCPopView: UIView {
     let endCalendarView = KDTRCCalendarView(frame: .zero)
     var beginSelectedTime = Date()
     var endSelectedTime = Date()
-    var beginTime = Calendar.current.date(byAdding: .month, value: -12, to: Date())!
+    var beginTime: Date
     var endTime = Date()
+    public var timeZone = TimeZone(identifier: "Asia/Shanghai")!
+    public var myCalendar = Calendar.current
 
     override init(frame: CGRect) {
+        myCalendar.timeZone = timeZone
+        beginTime = myCalendar.date(byAdding: .month, value: -12, to: Date())!
         super.init(frame: frame)
         backgroundColor = .white
         layer.cornerRadius = 2
@@ -25,6 +29,7 @@ class KDTRCPopView: UIView {
         layer.borderWidth = 1
         alpha = 1
     }
+
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         setupUI()
@@ -37,11 +42,13 @@ class KDTRCPopView: UIView {
     func setup(calenderView: KDTRCCalendarView) {
         calenderView.translatesAutoresizingMaskIntoConstraints = false
         calenderView.delegate = self
+        calenderView.myCalendar = myCalendar
+        calenderView.timeZone = timeZone
         addSubview(calenderView)
     }
 
     func createBeginView() {
-        beginCalendarView.selectedDate =  beginSelectedTime
+        beginCalendarView.selectedDate = beginSelectedTime
         setup(calenderView: beginCalendarView)
         addConstraints([
             NSLayoutConstraint(item: beginCalendarView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0),
@@ -52,7 +59,7 @@ class KDTRCPopView: UIView {
     }
 
     func createEndView() {
-        endCalendarView.selectedDate =  endSelectedTime
+        endCalendarView.selectedDate = endSelectedTime
         setup(calenderView: endCalendarView)
         addConstraints([
             NSLayoutConstraint(item: endCalendarView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0),
@@ -102,9 +109,9 @@ extension KDTRCPopView: KDTRCCalendarViewDelegate {
     func selectedDate(_ calendarView: KDTRCCalendarView, didSelectDate date: Date) {
         if calendarView == beginCalendarView {
             beginSelectedTime = date
-            let willBeginDate = Calendar.current.date(byAdding: .month, value: -1, to: date)!
+            let willBeginDate = myCalendar.date(byAdding: .month, value: -1, to: date)!
             endCalendarView.beginDate = willBeginDate > beginTime ? willBeginDate : beginTime
-            let willEndDate = Calendar.current.date(byAdding: .month, value: 1, to: date)!
+            let willEndDate = myCalendar.date(byAdding: .month, value: 1, to: date)!
             endCalendarView.endDate = endTime > willEndDate ? willEndDate : endTime
             endCalendarView.reloadDate(willSeleteDate: date)
         } else if calendarView == endCalendarView {
