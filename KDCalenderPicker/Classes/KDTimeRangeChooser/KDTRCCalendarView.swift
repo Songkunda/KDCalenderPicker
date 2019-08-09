@@ -18,11 +18,13 @@ public class KDTRCCalendarView: UIView {
     public var beginDate: Date = Calendar.current.date(byAdding: .month, value: -12, to: Date())!
     public var endDate: Date = Date()
     fileprivate let header = KDTRCCalendarHeaderView(frame: .zero)
-    fileprivate let myCalendar = JTAppleCalendarView(frame: .zero)
+    fileprivate let myJTCalendar = JTAppleCalendarView(frame: .zero)
     public var delegate: KDTRCCalendarViewDelegate?
-    public var timeZone = TimeZone(identifier:"Asia/Shanghai")!
+    public var timeZone = TimeZone(identifier: "Asia/Shanghai")!
+    public var myCalendar = Calendar.current
 
     fileprivate func setupUI() {
+        myCalendar.timeZone = timeZone
         header.translatesAutoresizingMaskIntoConstraints = false
         header.changeMonth = { todo in
             let formatter = DateFormatter()
@@ -39,7 +41,7 @@ public class KDTRCCalendarView: UIView {
             }
 
             if let startDate = formatter.date(from: "\(year) \(month)") {
-                self.myCalendar.scrollToDate(startDate)
+                self.myJTCalendar.scrollToDate(startDate)
             }
         }
         addSubview(header)
@@ -60,17 +62,17 @@ public class KDTRCCalendarView: UIView {
             NSLayoutConstraint(item: weekLabels, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 0, constant: 25),
         ])
 
-        setCalendar(myCalendar)
-        myCalendar.selectDates(from: selectedDate, to: selectedDate)
-        myCalendar.scrollToDate(selectedDate, animateScroll: false)
-        addSubview(myCalendar)
+        setCalendar(myJTCalendar)
+        myJTCalendar.selectDates(from: selectedDate, to: selectedDate)
+        myJTCalendar.scrollToDate(selectedDate, animateScroll: false)
+        addSubview(myJTCalendar)
         addConstraints([
-            NSLayoutConstraint(item: myCalendar, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: myCalendar, attribute: .top, relatedBy: .equal, toItem: weekLabels, attribute: .bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: myCalendar, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 0, constant: KDTRCCalendarViewCellSize * 7),
-            NSLayoutConstraint(item: myCalendar, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: myJTCalendar, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: myJTCalendar, attribute: .top, relatedBy: .equal, toItem: weekLabels, attribute: .bottom, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: myJTCalendar, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 0, constant: KDTRCCalendarViewCellSize * 7),
+            NSLayoutConstraint(item: myJTCalendar, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0),
         ])
-        myCalendar.visibleDates { [unowned self] (visibleDates: DateSegmentInfo) in
+        myJTCalendar.visibleDates { [unowned self] (visibleDates: DateSegmentInfo) in
             self.headerTextUpdate(visibleDates)
         }
     }
@@ -79,7 +81,7 @@ public class KDTRCCalendarView: UIView {
         super.init(frame: frame)
     }
 
-    override public func didMoveToSuperview() {
+    public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         setupUI()
     }
@@ -88,7 +90,7 @@ public class KDTRCCalendarView: UIView {
         guard let startDate = visibleDates.monthDates.first?.date else {
             return
         }
-        let dateComponents = Calendar.current.dateComponents(in: timeZone, from: startDate)
+        let dateComponents = myCalendar.dateComponents(in: timeZone, from: startDate)
         header.setTitle(withYear: dateComponents.year!, andMonth: dateComponents.month!)
     }
 
@@ -116,11 +118,11 @@ public class KDTRCCalendarView: UIView {
             selectedDate = willSeleteDate
         }
 
-        myCalendar.reloadData()
-        myCalendar.visibleDates { [unowned self] (visibleDates: DateSegmentInfo) in
+        myJTCalendar.reloadData()
+        myJTCalendar.visibleDates { [unowned self] (visibleDates: DateSegmentInfo) in
             self.headerTextUpdate(visibleDates)
-            self.myCalendar.selectDates(from: self.selectedDate, to: self.selectedDate)
-            self.myCalendar.scrollToDate(self.selectedDate, animateScroll: false)
+            self.myJTCalendar.selectDates(from: self.selectedDate, to: self.selectedDate)
+            self.myJTCalendar.scrollToDate(self.selectedDate, animateScroll: false)
         }
     }
 }
@@ -165,11 +167,8 @@ extension KDTRCCalendarView: JTAppleCalendarViewDataSource {
     /// - Parameter calendar: 日历
     /// - Returns: 配置数据
     public func configureCalendar(_ calendar: JTAppleCalendarView) -> ConfigurationParameters {
-        // CCT
-        // let dateComponents = Calendar.current.dateComponents(in:  TimeZone(abbreviation: "GMT+0800") ?? TimeZone(secondsFromGMT: 28800)!, from: Date())
-        //  print("\(dateComponents.year)年\(dateComponents.month)月\(dateComponents.day)日")
-
         return ConfigurationParameters(startDate: beginDate, endDate: endDate, numberOfRows: 6,
+                                       calendar: myCalendar,
                                        generateInDates: .forAllMonths,
                                        generateOutDates: .tillEndOfGrid,
                                        firstDayOfWeek: DaysOfWeek.sunday)

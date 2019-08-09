@@ -55,12 +55,15 @@ class KDTRCDateCell: JTAppleCell {
                 UIView.animate(withDuration: KDTRCDateCellSeletionDuration, animations: {
                     self.selectedView.frame.size = .init(width: 0, height: 0)
                     self.selectedView.center = self.contentView.center
-                    self.dayLabel.textColor = (beginDate <= date && date <= endDate && cellState.dateBelongsTo == .thisMonth) ? KDTimeRangeChooserStyle.normalColor : KDTimeRangeChooserStyle.disColor
                 })
             } else {
                 selectedView.frame.size = .init(width: 0, height: 0)
                 selectedView.center = contentView.center
-                dayLabel.textColor = (beginDate <= date && date <= endDate && cellState.dateBelongsTo == .thisMonth) ? KDTimeRangeChooserStyle.normalColor : KDTimeRangeChooserStyle.disColor
+            }
+            if isUserInteractionEnabled {
+                dayLabel.textColor = (cellState.dateBelongsTo == .thisMonth) ? KDTimeRangeChooserStyle.normalColor : KDTimeRangeChooserStyle.disColor
+            } else {
+                dayLabel.textColor = .white
             }
         }
     }
