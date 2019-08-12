@@ -8,7 +8,8 @@
 import Foundation
 
 class KDTRCCalendarHeaderView: UIView {
-    var changeMonth: ((Int) -> Void)?
+    var  changeMonth: ((Int) -> Void)?
+    
 
     let titleLab = UILabel(frame: .zero)
     let leftBtn = UIButton(type: .custom)
@@ -65,5 +66,9 @@ class KDTRCCalendarHeaderView: UIView {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print(self, #function)
     }
 }
