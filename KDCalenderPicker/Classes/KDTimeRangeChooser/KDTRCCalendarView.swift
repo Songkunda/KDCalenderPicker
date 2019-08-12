@@ -19,14 +19,14 @@ public class KDTRCCalendarView: UIView {
     public var endDate: Date = Date()
     fileprivate let header = KDTRCCalendarHeaderView(frame: .zero)
     fileprivate let myJTCalendar = JTAppleCalendarView(frame: .zero)
-    public var delegate: KDTRCCalendarViewDelegate?
+    public weak var delegate: KDTRCCalendarViewDelegate?
     public var timeZone = TimeZone(identifier: "Asia/Shanghai")!
     public var myCalendar = Calendar.current
 
     fileprivate func setupUI() {
         myCalendar.timeZone = timeZone
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.changeMonth = { todo in
+        header.changeMonth = {[unowned self] todo in
             let formatter = DateFormatter()
             formatter.timeZone = self.timeZone
             formatter.dateFormat = "yyyy MM"
@@ -83,9 +83,11 @@ public class KDTRCCalendarView: UIView {
 
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        setupUI()
+        if superview != nil {
+            setupUI()
+        }
     }
-
+    
     func headerTextUpdate(_ visibleDates: DateSegmentInfo) {
         guard let startDate = visibleDates.monthDates.first?.date else {
             return
@@ -104,8 +106,8 @@ public class KDTRCCalendarView: UIView {
         calendar.scrollDirection = .horizontal
         calendar.scrollingMode = .stopAtEachCalendarFrame
         calendar.showsHorizontalScrollIndicator = false
-        calendar.ibCalendarDelegate = self
-        calendar.ibCalendarDataSource = self
+        calendar.calendarDelegate = self
+        calendar.calendarDataSource = self
         calendar.backgroundColor = KDTimeRangeChooserStyle.bgColor
         calendar.cellSize = KDTRCCalendarViewCellSize
         calendar.scrollingMode = .stopAtEachCalendarFrame
@@ -124,6 +126,10 @@ public class KDTRCCalendarView: UIView {
             self.myJTCalendar.selectDates(from: self.selectedDate, to: self.selectedDate)
             self.myJTCalendar.scrollToDate(self.selectedDate, animateScroll: false)
         }
+    }
+
+    deinit {
+        print(self, #function)
     }
 }
 
