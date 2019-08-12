@@ -43,4 +43,8 @@ class KDTimeRangeChooserStyle {
     class var labBGColor: UIColor {
         return KDTimeRangeChooserStyle.style.labBGColor
     }
+    
+    deinit {
+        print(self, #function)
+    }
 }

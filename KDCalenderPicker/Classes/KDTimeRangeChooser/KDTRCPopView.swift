@@ -32,7 +32,9 @@ class KDTRCPopView: UIView {
 
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        setupUI()
+        if superview != nil {
+            setupUI()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -71,10 +73,10 @@ class KDTRCPopView: UIView {
 
     func createFooterView() {
         let footerView = KDTRCPopViewFooter(frame: .zero)
-        footerView.cancelCallBack = {
+        footerView.cancelCallBack = { [unowned self] in
             if self.cancelBtnClicked != nil { self.cancelBtnClicked!() }
         }
-        footerView.submitCallBack = {
+        footerView.submitCallBack = { [unowned self] in
             if self.submitBtnClicked != nil { self.submitBtnClicked!() }
         }
         footerView.translatesAutoresizingMaskIntoConstraints = false
@@ -102,6 +104,10 @@ class KDTRCPopView: UIView {
         createEndView()
         createLine()
         createFooterView()
+    }
+
+    deinit {
+        print(self, #function)
     }
 }
 

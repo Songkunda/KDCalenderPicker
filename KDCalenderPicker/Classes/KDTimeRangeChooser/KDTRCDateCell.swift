@@ -44,7 +44,7 @@ class KDTRCDateCell: JTAppleCell {
 
     fileprivate func configueViewIntoBubbleView(_ cellState: CellState, date: Date, animateDeselection: Bool = false, beginDate: Date, endDate: Date) {
         if cellState.isSelected && isUserInteractionEnabled {
-            UIView.animate(withDuration: KDTRCDateCellSeletionDuration, animations: {
+            UIView.animate(withDuration: KDTRCDateCellSeletionDuration, animations: { [unowned self] in
                 self.selectedView.frame.size = .init(width: 20, height: 20)
                 self.selectedView.center = self.contentView.center
                 self.selectedView.layer.cornerRadius = 10
@@ -52,7 +52,7 @@ class KDTRCDateCell: JTAppleCell {
             })
         } else {
             if animateDeselection {
-                UIView.animate(withDuration: KDTRCDateCellSeletionDuration, animations: {
+                UIView.animate(withDuration: KDTRCDateCellSeletionDuration, animations: { [unowned self] in
                     self.selectedView.frame.size = .init(width: 0, height: 0)
                     self.selectedView.center = self.contentView.center
                 })
@@ -70,5 +70,9 @@ class KDTRCDateCell: JTAppleCell {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print(self, #function)
     }
 }

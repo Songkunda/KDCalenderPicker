@@ -14,13 +14,13 @@ public protocol KDTimeRangeChooserDelegate: class {
 
 public class KDTimeRangeChooser: UIView {
     var isSetup = false
-    var poper: UIView?
+    var poper: KDTRCPopView?
     let sCaLab = UILabel(frame: .zero)
     let eCaLab = UILabel(frame: .zero)
 
     public var beginSelectedTime: Date = Date()
     public var endSelectedTime: Date = Date()
-    public var delegate: KDTimeRangeChooserDelegate?
+    public weak var delegate: KDTimeRangeChooserDelegate?
     public var timeZone = TimeZone(identifier: "Asia/Shanghai")!
 
     override init(frame: CGRect) {
@@ -81,14 +81,14 @@ public class KDTimeRangeChooser: UIView {
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         if poper == nil {
-            poper = {
+            poper = { 
                 let popView = KDTRCPopView(frame: .zero)
                 popView.beginSelectedTime = beginSelectedTime
                 popView.endSelectedTime = endSelectedTime
-                popView.cancelBtnClicked = {
+                popView.cancelBtnClicked = {[unowned self] () in
                     self.removePoper()
                 }
-                popView.submitBtnClicked = { [unowned self] in
+                popView.submitBtnClicked = { [unowned self] () in
                     if popView.beginSelectedTime < popView.endSelectedTime {
                         self.beginSelectedTime = popView.beginSelectedTime
                         self.endSelectedTime = popView.endSelectedTime
@@ -113,14 +113,18 @@ public class KDTimeRangeChooser: UIView {
     }
 
     func removePoper() {
-        poper = {
-            poper?.removeFromSuperview()
-            return nil
-        }()
+        poper?.cancelBtnClicked = nil
+        poper?.submitBtnClicked = nil
+        poper?.removeFromSuperview()
+        poper = nil
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupUI()
+    }
+
+    deinit {
+        print(self, #function)
     }
 }
