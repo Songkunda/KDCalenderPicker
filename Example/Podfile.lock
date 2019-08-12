@@ -44,7 +44,11 @@ SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   iOSSnapshotTestCase: 415bd84f9dbba4ff45fede49d800bc7332fbedac
   JTAppleCalendar: 96da4d8388fa6dc82d6a60d41ef36a015e167e2f
+<<<<<<< HEAD
   KDCalenderPicker: 5edb107c3f738b82d148ccb1856f51444d26b21e
+=======
+  KDCalenderPicker: 3df98efe2bee7075c0b69420e1bb367e1d0a576a
+>>>>>>> feature/KDSelect
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
   Nimble-Snapshots: 438fb1a6fa3c655e246fc9ac375f6cd2964d759a
   Quick: 4be43f6634acfa727dd106bdf3929ce125ffa79d
