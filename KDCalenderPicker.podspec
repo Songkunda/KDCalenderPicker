@@ -33,9 +33,9 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'KDCalenderPicker/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'KDCalenderPicker' => ['KDCalenderPicker/Assets/*.png']
-  # }
+   s.resource_bundles = {
+     'KDCalenderPicker' => ['KDCalenderPicker/Assets/Resources/**/*.png']
+   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
    s.frameworks = 'UIKit', 'JTAppleCalendar'

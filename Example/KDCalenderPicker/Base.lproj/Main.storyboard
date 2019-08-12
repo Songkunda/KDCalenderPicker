@@ -29,11 +29,33 @@
                                     <constraint firstAttribute="width" priority="750" constant="50" id="NHq-Xz-Fx2"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NcI-hW-LFJ">
+                                <rect key="frame" x="16" y="114" width="343" height="50"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" restorationIdentifier="mySelectView" translatesAutoresizingMaskIntoConstraints="NO" id="NVq-JO-3Wi" customClass="KDSelectView" customModule="KDCalenderPicker">
+                                        <rect key="frame" x="128.5" y="13" width="86" height="24"/>
+                                        <color key="backgroundColor" red="0.97254901960784312" green="0.97647058823529409" blue="0.9882352941176471" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" priority="250" constant="86" id="SX7-jJ-lEG"/>
+                                            <constraint firstAttribute="height" priority="250" constant="24" id="zSJ-M9-vlo"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="NVq-JO-3Wi" firstAttribute="centerY" secondItem="NcI-hW-LFJ" secondAttribute="centerY" id="Vhf-lg-Wtq"/>
+                                    <constraint firstItem="NVq-JO-3Wi" firstAttribute="centerX" secondItem="NcI-hW-LFJ" secondAttribute="centerX" id="YUP-Lm-H9Q"/>
+                                    <constraint firstAttribute="height" constant="50" id="tBg-1e-khe"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="YNT-A0-Shx" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="10" id="4QH-Ux-sFN"/>
+                            <constraint firstItem="NcI-hW-LFJ" firstAttribute="top" secondItem="YNT-A0-Shx" secondAttribute="bottom" constant="25" id="JfT-xm-Fp5"/>
                             <constraint firstItem="YNT-A0-Shx" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" constant="45" id="Lya-p2-4Pm"/>
+                            <constraint firstItem="NcI-hW-LFJ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="mPg-uy-YhV"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="NcI-hW-LFJ" secondAttribute="trailing" id="nkB-WY-6b0"/>
                         </constraints>
                     </view>
                 </viewController>
