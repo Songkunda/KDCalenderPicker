@@ -81,11 +81,11 @@ public class KDTimeRangeChooser: UIView {
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         if poper == nil {
-            poper = { 
+            poper = {
                 let popView = KDTRCPopView(frame: .zero)
                 popView.beginSelectedTime = beginSelectedTime
                 popView.endSelectedTime = endSelectedTime
-                popView.cancelBtnClicked = {[unowned self] () in
+                popView.cancelBtnClicked = { [unowned self] () in
                     self.removePoper()
                 }
                 popView.submitBtnClicked = { [unowned self] () in
@@ -101,9 +101,9 @@ public class KDTimeRangeChooser: UIView {
                     self.removePoper()
                 }
                 popView.translatesAutoresizingMaskIntoConstraints = false
-                self.superview?.addSubview(popView)
-                self.superview?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[cs]-(-88)-[pp(==512)]", options: [], metrics: nil, views: ["pp": popView, "cs": sCaLab]))
-                self.superview?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[cs]-[pp(==280)]", options: [], metrics: nil, views: ["pp": popView, "cs": sCaLab]))
+                window?.addSubview(popView)
+                popView.superview?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[cs]-(-88)-[pp(==512)]", options: [], metrics: nil, views: ["pp": popView, "cs": sCaLab]))
+                popView.superview?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[cs]-[pp(==280)]", options: [], metrics: nil, views: ["pp": popView, "cs": sCaLab]))
                 return popView
             }()
 
@@ -116,6 +116,7 @@ public class KDTimeRangeChooser: UIView {
         poper?.cancelBtnClicked = nil
         poper?.submitBtnClicked = nil
         poper?.removeFromSuperview()
+        poper?.removeConstraints(poper?.constraints ?? [])
         poper = nil
     }
 
