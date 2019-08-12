@@ -1,5 +1,5 @@
 import UIKit
-class KDSelectTableView: UITableView {
+public class KDSelectTableView: UITableView {
     deinit {
         print(self, #function)
     }
