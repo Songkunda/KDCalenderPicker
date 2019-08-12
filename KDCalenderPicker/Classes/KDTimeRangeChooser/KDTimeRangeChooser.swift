@@ -113,8 +113,8 @@ public class KDTimeRangeChooser: UIView {
     }
 
     func removePoper() {
-//        poper?.cancelBtnClicked = nil
-//        poper?.submitBtnClicked = nil
+        poper?.cancelBtnClicked = nil
+        poper?.submitBtnClicked = nil
         poper?.removeFromSuperview()
         poper = nil
     }
