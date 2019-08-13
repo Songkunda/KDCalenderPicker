@@ -22,13 +22,17 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+          selectView.isDisabled = true
+    }
    
 }
 
 extension ViewController: KDSelectViewDelegate {
     func selectView(_ selectView: KDSelectView, selectedModel: KDSelectTableCellModel) {
         print("Selected Cell \(selectedModel)")
+      
     }
 }
 
