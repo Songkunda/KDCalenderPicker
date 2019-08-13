@@ -10,12 +10,36 @@ public protocol KDSelectViewDelegate: class {
 
 public class KDSelectView: UIView {
     let myLab = UILabel(frame: .zero)
-    public weak var dataSource: KDSelectViewDateSource?
+    public weak var dataSource: KDSelectViewDateSource? {
+        didSet {
+            sources = dataSource?.selectView(self) ?? []
+            myLab.text = sources.first?.name
+        }
+    }
+
     public weak var delegate: KDSelectViewDelegate?
-    let tableView = KDSelectTableView(frame: .zero, style: .plain)
+    let tableView = KDSelectTableView(frame: .init(origin: .zero, size: .init(width: 1, height: 1)), style: .plain)
     var tableViewLayoutHeight: NSLayoutConstraint?
     var tableViewShow = false
     var sources: [KDSelectTableCellModel] = []
+    fileprivate func isDisabledChange() {
+        if isDisabled {
+            if tableViewShow == true {
+                tableViewShowSwitcher()
+            }
+            alpha = 0.5
+            isUserInteractionEnabled = false
+        } else {
+            alpha = 1
+            isUserInteractionEnabled = true
+        }
+    }
+
+    public var isDisabled = false {
+        didSet {
+            isDisabledChange()
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,7 +55,18 @@ public class KDSelectView: UIView {
         super.awakeFromNib()
     }
 
+    public func reloadData() {
+        sources = dataSource?.selectView(self) ?? []
+        myLab.text = sources.first?.name
+        tableView.reloadData()
+    }
+
     func setupUI() {
+        //
+        layer.cornerRadius = 2
+        layer.borderColor = KDTimeRangeChooserStyle.borderColor.cgColor
+        layer.borderWidth = 1
+        backgroundColor = KDTimeRangeChooserStyle.labBGColor
         // 添加label
         myLab.translatesAutoresizingMaskIntoConstraints = false
         // 设置lab
@@ -50,40 +85,50 @@ public class KDSelectView: UIView {
         tableView.register(KDSelectTableCell.self, forCellReuseIdentifier: "\(KDSelectTableCell.self)")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
+        tableView.layer.cornerRadius = 1
+        tableView.layer.borderColor = KDTimeRangeChooserStyle.borderColor.cgColor
+        tableView.layer.borderWidth = 1
 
         tableView.delegate = self
         tableView.dataSource = self
+        isDisabledChange()
     }
 
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
+        if isDisabled {
+            return
+        }
         tableViewShowSwitcher()
+    }
+
+    public override func removeFromSuperview() {
+        tableView.removeFromSuperview()
+        super.removeFromSuperview()
     }
 
     func tableViewShowSwitcher() {
         if tableViewShow == false {
             tableViewShow = true
-            window?.addSubview(tableView)
-            tableViewLayoutHeight = NSLayoutConstraint(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 0, constant: 0)
-            NSLayoutConstraint.activate([
-                NSLayoutConstraint(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1, constant: 0),
-                tableViewLayoutHeight!,
-                NSLayoutConstraint(item: tableView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: tableView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0),
-            ])
-            UIView.animate(withDuration: 0.3) { [unowned self] in
-                self.tableViewLayoutHeight!.constant = 120
+            if tableViewLayoutHeight == nil {
+                window?.addSubview(tableView)
+                tableViewLayoutHeight = NSLayoutConstraint(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 0, constant: 1)
+                NSLayoutConstraint.activate([
+                    NSLayoutConstraint(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1, constant: 0),
+                    tableViewLayoutHeight!,
+                    NSLayoutConstraint(item: tableView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: tableView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0),
+                ])
             }
-            tableView.layoutIfNeeded()
-            tableView.selectRow(at: tableView.indexPathForSelectedRow, animated: true, scrollPosition: .middle)
+            UIView.animate(withDuration: 0.3, animations: { [unowned self] in
+                self.tableViewLayoutHeight!.constant = 120
+            })
 
         } else {
             tableViewShow = false
             UIView.animate(withDuration: 0.3) { [unowned self] in
-                self.tableViewLayoutHeight!.constant = 0
+                self.tableViewLayoutHeight!.constant = 1
             }
-            tableView.removeFromSuperview()
-            tableView.removeConstraints(tableView.constraints)
         }
     }
 
@@ -94,15 +139,18 @@ public class KDSelectView: UIView {
 
 extension KDSelectView: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        sources = dataSource?.selectView(self) ?? []
         return sources.count
+    }
+
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(KDSelectTableCell.self)") as! KDSelectTableCell
         cell.set(cellModel: sources[indexPath.row])
         if tableView.indexPathForSelectedRow == nil {
-            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .top)
         }
         return cell
     }
@@ -119,6 +167,7 @@ extension KDSelectView: UITableViewDataSource {
 extension KDSelectView: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate?.selectView(self, selectedModel: sources[indexPath.row])
+        myLab.text = sources[indexPath.row].name
         tableViewShowSwitcher()
     }
 }
