@@ -23,7 +23,7 @@ public class KDSelectView: UIView {
     var tableViewShow = false
     var sources: [KDSelectTableCellModel] = []
     ///返回被选择项
-    var selectedModel: KDSelectTableCellModel? {
+    public var selectedModel: KDSelectTableCellModel? {
         if let indexPath = tableView.indexPathForSelectedRow {
             return sources[indexPath.row]
         }
