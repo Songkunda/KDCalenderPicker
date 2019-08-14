@@ -1,6 +1,6 @@
 import UIKit
 
-public protocol KDSelectViewDateSource: class {
+public protocol KDSelectViewDataSource: class {
     func selectView(_ selectView: KDSelectView) -> [KDSelectTableCellModel]
 }
 
@@ -10,7 +10,7 @@ public protocol KDSelectViewDelegate: class {
 
 public class KDSelectView: UIView {
     let myLab = UILabel(frame: .zero)
-    public weak var dataSource: KDSelectViewDateSource? {
+    public weak var dataSource: KDSelectViewDataSource? {
         didSet {
             sources = dataSource?.selectView(self) ?? []
             myLab.text = sources.first?.name
