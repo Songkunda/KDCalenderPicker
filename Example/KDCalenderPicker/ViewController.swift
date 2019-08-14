@@ -36,7 +36,7 @@ extension ViewController: KDSelectViewDelegate {
     }
 }
 
-extension ViewController: KDSelectViewDateSource {
+extension ViewController: KDSelectViewDataSource {
     func selectView(_ selectView: KDSelectView) -> [KDSelectTableCellModel] {
         return [
             KDSelectTableCellModel(key: "default", name: "全部"),
