@@ -22,6 +22,14 @@ public class KDSelectView: UIView {
     var tableViewLayoutHeight: NSLayoutConstraint?
     var tableViewShow = false
     var sources: [KDSelectTableCellModel] = []
+    ///返回被选择项
+    var selectedModel: KDSelectTableCellModel? {
+        if let indexPath = tableView.indexPathForSelectedRow {
+            return sources[indexPath.row]
+        }
+        return nil
+    }
+
     fileprivate func isDisabledChange() {
         if isDisabled {
             if tableViewShow == true {
