@@ -28,7 +28,7 @@ public class KDTimeRangeChooser: UIView {
         setupUI()
     }
 
-    func refleshUI() {
+   public func refleshUI() {
         let formatter = DateFormatter()
         formatter.timeZone = timeZone
         formatter.dateFormat = "yyyy/MM/dd"
