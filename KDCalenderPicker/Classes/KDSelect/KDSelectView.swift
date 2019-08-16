@@ -22,7 +22,7 @@ public class KDSelectView: UIView {
     var tableViewLayoutHeight: NSLayoutConstraint?
     var tableViewShow = false
     var sources: [KDSelectTableCellModel] = []
-    ///返回被选择项
+    /// 返回被选择项
     public var selectedModel: KDSelectTableCellModel? {
         if let indexPath = tableView.indexPathForSelectedRow {
             return sources[indexPath.row]
@@ -92,13 +92,13 @@ public class KDSelectView: UIView {
         //
         tableView.register(KDSelectTableCell.self, forCellReuseIdentifier: "\(KDSelectTableCell.self)")
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.separatorStyle = .none
         tableView.layer.cornerRadius = 1
         tableView.layer.borderColor = KDTimeRangeChooserStyle.borderColor.cgColor
         tableView.layer.borderWidth = 1
 
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView(frame: .zero)
         isDisabledChange()
     }
 
@@ -163,12 +163,20 @@ extension KDSelectView: UITableViewDataSource {
         return cell
     }
 
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0
+    }
+
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return UIView(frame: .zero)
     }
 
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView(frame: .zero)
+    }
+
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 30
     }
 }
 

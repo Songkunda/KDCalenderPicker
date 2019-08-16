@@ -3,6 +3,9 @@ class KDSelectTableCell: UITableViewCell {
     var model: KDSelectTableCellModel?
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        // fixed: for iPad
+        separatorInset = .init(top: 0, left: 0, bottom: 0, right: bounds.size.width)
+        layoutMargins = .zero
     }
 
     required init?(coder aDecoder: NSCoder) {
