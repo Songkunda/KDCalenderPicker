@@ -67,6 +67,10 @@ public class KDSelectView: UIView {
         sources = dataSource?.selectView(self) ?? []
         myLab.text = sources.first?.name
         tableView.reloadData()
+        if tableView.indexPathForSelectedRow != nil {
+            tableView.deselectRow(at: tableView.indexPathForSelectedRow!, animated: false)
+            tableView.selectRow(at: .init(item: 1, section: 1), animated: false, scrollPosition: .none)
+        }
     }
 
     func setupUI() {
