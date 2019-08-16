@@ -26,7 +26,7 @@ public class KDTRCCalendarView: UIView {
     fileprivate func setupUI() {
         myCalendar.timeZone = timeZone
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.changeMonth = {[unowned self] todo in
+        header.changeMonth = { [unowned self] todo in
             let formatter = DateFormatter()
             formatter.timeZone = self.timeZone
             formatter.dateFormat = "yyyy MM"
@@ -72,7 +72,7 @@ public class KDTRCCalendarView: UIView {
             NSLayoutConstraint(item: myJTCalendar, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 0, constant: KDTRCCalendarViewCellSize * 7),
             NSLayoutConstraint(item: myJTCalendar, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0),
         ])
-        myJTCalendar.visibleDates { [unowned self] (visibleDates: DateSegmentInfo) in
+        myJTCalendar.visibleDates { (visibleDates: DateSegmentInfo) in
             self.headerTextUpdate(visibleDates)
         }
     }
@@ -87,7 +87,7 @@ public class KDTRCCalendarView: UIView {
             setupUI()
         }
     }
-    
+
     func headerTextUpdate(_ visibleDates: DateSegmentInfo) {
         guard let startDate = visibleDates.monthDates.first?.date else {
             return
@@ -121,7 +121,7 @@ public class KDTRCCalendarView: UIView {
         }
 
         myJTCalendar.reloadData()
-        myJTCalendar.visibleDates { [unowned self] (visibleDates: DateSegmentInfo) in
+        myJTCalendar.visibleDates { (visibleDates: DateSegmentInfo) in
             self.headerTextUpdate(visibleDates)
             self.myJTCalendar.selectDates(from: self.selectedDate, to: self.selectedDate)
             self.myJTCalendar.scrollToDate(self.selectedDate, animateScroll: false)
