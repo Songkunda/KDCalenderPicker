@@ -69,7 +69,7 @@ public class KDSelectView: UIView {
         tableView.reloadData()
         if tableView.indexPathForSelectedRow != nil {
             tableView.deselectRow(at: tableView.indexPathForSelectedRow!, animated: false)
-            tableView.selectRow(at: .init(item: 1, section: 1), animated: false, scrollPosition: .none)
+            tableView.selectRow(at: .init(row: 0, section: 0), animated: false, scrollPosition: .none)
         }
     }
 
