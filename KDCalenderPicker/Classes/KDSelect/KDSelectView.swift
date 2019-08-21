@@ -120,26 +120,33 @@ public class KDSelectView: UIView {
     }
 
     func tableViewShowSwitcher() {
+        if tableView.frame.width < 10 {
+            tableViewShow = false
+        }
         if tableViewShow == false {
             tableViewShow = true
-            if tableViewLayoutHeight == nil {
+            if tableView.superview == nil {
                 window?.addSubview(tableView)
-                tableViewLayoutHeight = NSLayoutConstraint(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 0, constant: 1)
-                NSLayoutConstraint.activate([
-                    NSLayoutConstraint(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1, constant: 0),
-                    tableViewLayoutHeight!,
-                    NSLayoutConstraint(item: tableView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1, constant: 0),
-                    NSLayoutConstraint(item: tableView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0),
-                ])
             }
+            tableViewLayoutHeight = NSLayoutConstraint(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 0, constant: 1)
+            NSLayoutConstraint.activate([
+                NSLayoutConstraint(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1, constant: 0),
+                tableViewLayoutHeight!,
+                NSLayoutConstraint(item: tableView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: tableView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0),
+            ])
             UIView.animate(withDuration: 0.3, animations: { [unowned self] in
-                self.tableViewLayoutHeight!.constant = 120
+                let height = self.sources.count * 30 + 30
+                self.tableViewLayoutHeight!.constant = CGFloat(height > 240 ? 240 : height)
             })
 
         } else {
             tableViewShow = false
-            UIView.animate(withDuration: 0.3) { [unowned self] in
+            UIView.animate(withDuration: 0.3, animations: {
                 self.tableViewLayoutHeight!.constant = 1
+            }) { _ in
+                self.tableView.removeFromSuperview()
+                self.tableView.removeConstraints(self.tableView.constraints)
             }
         }
     }
