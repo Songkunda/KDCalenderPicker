@@ -69,7 +69,7 @@ public class KDSelectView: UIView {
         tableView.reloadData()
         if tableView.indexPathForSelectedRow != nil {
             tableView.deselectRow(at: tableView.indexPathForSelectedRow!, animated: false)
-            tableView.selectRow(at: .init(row: 0, section: 0), animated: false, scrollPosition: .none)
+            tableView.selectRow(at: .init(row: 0, section: 0), animated: true, scrollPosition: .middle)
         }
     }
 
@@ -102,6 +102,7 @@ public class KDSelectView: UIView {
 
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableHeaderView = UIView(frame: .zero)
         tableView.tableFooterView = UIView(frame: .zero)
         isDisabledChange()
     }
@@ -169,13 +170,17 @@ extension KDSelectView: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(KDSelectTableCell.self)") as! KDSelectTableCell
         cell.set(cellModel: sources[indexPath.row])
         if tableView.indexPathForSelectedRow == nil {
-            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .top)
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
         }
         return cell
     }
 
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0
+        return 0.01
+    }
+
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0.01
     }
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
