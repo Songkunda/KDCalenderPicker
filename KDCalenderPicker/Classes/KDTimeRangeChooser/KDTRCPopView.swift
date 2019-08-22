@@ -61,8 +61,10 @@ class KDTRCPopView: UIView {
     }
 
     func createEndView() {
-        endCalendarView.selectedDate = endSelectedTime
+        endCalendarView.beginDate = myCalendar.date(byAdding: .day, value: -1, to: beginSelectedTime)!
+        endCalendarView.endDate = endTime
         setup(calenderView: endCalendarView)
+        endCalendarView.reloadDate(willSeleteDate: endSelectedTime)
         addConstraints([
             NSLayoutConstraint(item: endCalendarView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: endCalendarView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0),
@@ -115,7 +117,7 @@ extension KDTRCPopView: KDTRCCalendarViewDelegate {
     func selectedDate(_ calendarView: KDTRCCalendarView, didSelectDate date: Date) {
         if calendarView == beginCalendarView {
             beginSelectedTime = date
-            let willBeginDate = myCalendar.date(byAdding: .month, value: -1, to: date)!
+            let willBeginDate = myCalendar.date(byAdding: .month, value: 0, to: date)!
             endCalendarView.beginDate = willBeginDate > beginTime ? willBeginDate : beginTime
             let willEndDate = myCalendar.date(byAdding: .month, value: 1, to: date)!
             endCalendarView.endDate = endTime > willEndDate ? willEndDate : endTime
