@@ -120,6 +120,12 @@ public class KDSelectView: UIView {
         super.removeFromSuperview()
     }
 
+    public func closedPopOverView() {
+        if tableViewShow {
+            tableViewShowSwitcher()
+        }
+    }
+
     func tableViewShowSwitcher() {
         if tableView.frame.width < 10 {
             tableViewShow = false

@@ -28,7 +28,7 @@ public class KDTimeRangeChooser: UIView {
         setupUI()
     }
 
-   public func refleshUI() {
+    public func refleshUI() {
         let formatter = DateFormatter()
         formatter.timeZone = timeZone
         formatter.dateFormat = "yyyy/MM/dd"
@@ -118,6 +118,12 @@ public class KDTimeRangeChooser: UIView {
         poper?.removeFromSuperview()
         poper?.removeConstraints(poper?.constraints ?? [])
         poper = nil
+    }
+
+    public func closedPopOverView() {
+        if poper != nil {
+            removePoper()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
