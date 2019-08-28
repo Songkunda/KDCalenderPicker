@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'KDCalenderPicker'
-  s.version          = '0.2.15'
+  s.version          = '0.2.17'
   s.summary          = 'KDCalenderPicker is a UI Lib. '
 
 # This description is used to generate tags and improve search results.
